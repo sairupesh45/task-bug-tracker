@@ -15,7 +15,7 @@ A full-stack issue-tracking app. Users can create tickets, set priority, change 
 - Per-user ticket counts using a SQL JOIN and GROUP BY (`/api/stats`)
 
 ## Screenshot
-![App screenshot](image.png)
+![App screenshot](screenshot.png)
 
 
 ## Database Model
