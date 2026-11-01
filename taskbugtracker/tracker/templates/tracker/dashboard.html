@@ -1,0 +1,134 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#10121b">
+    <title>Orbit — Issue tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'tracker/dashboard.css' %}">
+    <script src="{% static 'tracker/dashboard.js' %}" defer></script>
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="/" aria-label="Orbit home">
+                <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+                <span>orbit<span class="brand-period">.</span></span>
+            </a>
+            <p class="sidebar-label">WORKSPACE</p>
+            <nav class="side-nav" aria-label="Main navigation">
+                <a class="nav-link active" href="#overview"><span class="nav-icon">◫</span>Overview</a>
+                <a class="nav-link" href="#tickets"><span class="nav-icon">▤</span>All issues</a>
+            </nav>
+            <div class="sidebar-bottom">
+                <div class="sidebar-note">
+                    <span class="note-orb"></span>
+                    <div><strong>Keep things moving</strong><span>One issue at a time.</span></div>
+                </div>
+                <div class="profile">
+                    <div class="avatar avatar-purple">O</div>
+                    <div class="profile-copy"><strong>Orbit workspace</strong><span>Team space</span></div>
+                    <span class="profile-menu" aria-hidden="true">···</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content" id="overview">
+            <header class="topbar">
+                <div class="breadcrumbs"><span>Workspace</span><span class="crumb-slash">/</span><strong>Overview</strong></div>
+                <div class="topbar-actions">
+                    <span class="live-indicator"><span></span>Live workspace</span>
+                    <button class="avatar avatar-small avatar-purple" type="button" aria-label="Workspace profile">O</button>
+                </div>
+            </header>
+
+            <section class="page-heading">
+                <div>
+                    <p class="eyebrow"><span class="eyebrow-line"></span>YOUR TEAM, IN ORBIT</p>
+                    <h1>Issue overview<span class="heading-dot">.</span></h1>
+                    <p class="heading-copy">A little clarity goes a long way. Here's what's happening.</p>
+                </div>
+                <button class="primary-button" id="open-ticket-form" type="button"><span class="button-plus">+</span> New issue</button>
+            </section>
+
+            <section class="stats-grid" aria-label="Issue summary">
+                <article class="stat-card stat-card-total">
+                    <div class="stat-top"><span class="stat-label">Total issues</span><span class="stat-icon icon-lilac">▤</span></div>
+                    <div class="stat-value" id="total-count">—</div>
+                    <div class="stat-foot"><span class="stat-foot-dot dot-lilac"></span>Across your workspace</div>
+                </article>
+                <article class="stat-card">
+                    <div class="stat-top"><span class="stat-label">In progress</span><span class="stat-icon icon-blue">◷</span></div>
+                    <div class="stat-value" id="progress-count">—</div>
+                    <div class="stat-foot"><span class="stat-foot-dot dot-blue"></span>Currently being worked on</div>
+                </article>
+                <article class="stat-card">
+                    <div class="stat-top"><span class="stat-label">Open issues</span><span class="stat-icon icon-amber">○</span></div>
+                    <div class="stat-value" id="open-count">—</div>
+                    <div class="stat-foot"><span class="stat-foot-dot dot-amber"></span>Ready for a closer look</div>
+                </article>
+                <article class="stat-card">
+                    <div class="stat-top"><span class="stat-label">Completed</span><span class="stat-icon icon-green">✓</span></div>
+                    <div class="stat-value" id="done-count">—</div>
+                    <div class="stat-foot"><span class="stat-foot-dot dot-green"></span>Nice work, team</div>
+                </article>
+            </section>
+
+            <section class="issues-panel" id="tickets">
+                <div class="panel-heading">
+                    <div>
+                        <div class="panel-title-row"><h2>All issues</h2><span class="issue-total" id="visible-count">0</span></div>
+                        <p class="panel-subtitle">Track, prioritize, and keep the momentum.</p>
+                    </div>
+                    <label class="search-box">
+                        <span class="search-icon" aria-hidden="true">⌕</span>
+                        <input id="search-input" type="search" placeholder="Search issues..." autocomplete="off" aria-label="Search issues">
+                        <kbd>/</kbd>
+                    </label>
+                </div>
+                <div class="filter-row" role="group" aria-label="Filter issues by status">
+                    <button class="filter-chip selected" type="button" data-filter="all">All issues</button>
+                    <button class="filter-chip" type="button" data-filter="open"><span class="filter-dot dot-amber"></span>Open</button>
+                    <button class="filter-chip" type="button" data-filter="in_progress"><span class="filter-dot dot-blue"></span>In progress</button>
+                    <button class="filter-chip" type="button" data-filter="done"><span class="filter-dot dot-green"></span>Completed</button>
+                </div>
+                <div class="issue-list" id="issue-list" aria-live="polite">
+                    <div class="loading-state"><span class="spinner"></span>Gathering your issues...</div>
+                </div>
+                <div class="panel-footer"><span class="footer-pulse"></span>You're all caught up with your workspace</div>
+            </section>
+            <footer class="page-footer"><span>Made for teams that make things happen.</span><span>ORBIT <span class="footer-star">✳</span> ISSUE TRACKER</span></footer>
+        </main>
+    </div>
+
+    <dialog class="ticket-dialog" id="ticket-dialog" aria-labelledby="dialog-title">
+        <form id="ticket-form" class="ticket-form">
+            <div class="dialog-heading">
+                <div><p class="eyebrow"><span class="eyebrow-line"></span>MAKE IT HAPPEN</p><h2 id="dialog-title">Create an issue</h2></div>
+                <button class="icon-button" id="close-ticket-form" type="button" aria-label="Close dialog">×</button>
+            </div>
+            <label class="field-label" for="ticket-title">Issue title</label>
+            <input class="form-control" id="ticket-title" name="title" maxlength="150" placeholder="e.g. Fix the login flow" required>
+            <label class="field-label" for="ticket-description">Description <span class="optional-label">Optional</span></label>
+            <textarea class="form-control" id="ticket-description" name="description" rows="3" placeholder="Add a little more context..."></textarea>
+            <div class="form-row">
+                <div class="form-field"><label class="field-label" for="ticket-priority">Priority</label>
+                    <select class="form-control" id="ticket-priority" name="priority">
+                        <option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option>
+                    </select>
+                </div>
+                <div class="form-field"><label class="field-label" for="ticket-assignee">Assignee</label>
+                    <select class="form-control" id="ticket-assignee" name="assignee_id"><option value="">Unassigned</option></select>
+                </div>
+            </div>
+            <p class="form-error" id="form-error" role="alert" hidden></p>
+            <div class="dialog-actions"><button class="secondary-button" id="cancel-ticket-form" type="button">Cancel</button><button class="primary-button" id="submit-ticket" type="submit">Create issue <span aria-hidden="true">↗</span></button></div>
+        </form>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

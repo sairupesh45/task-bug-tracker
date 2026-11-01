@@ -1,5 +1,14 @@
 import json
-from django.test import TestCase
+from django.test import SimpleTestCase, TestCase
+
+
+class DashboardPageTests(SimpleTestCase):
+    def test_homepage_renders_dashboard(self):
+        response = self.client.get("/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Issue overview")
+        self.assertContains(response, "tracker/dashboard.css")
 
 
 class TicketApiTests(TestCase):

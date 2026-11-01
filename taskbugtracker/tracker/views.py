@@ -1,8 +1,13 @@
 import json
 from django.db.models import Count
 from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from .models import Ticket, User
+
+
+def dashboard(request):
+    return render(request, "tracker/dashboard.html")
 
 
 def body(request):
